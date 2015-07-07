@@ -11,7 +11,7 @@ greaterThan(QT_MAJOR_VERSION, 4): QT += widgets
 TARGET          = Prototype
 TEMPLATE        = app
 QMAKE_CXXFLAGS  += -std=c++11
-QMAKE_LFLAGS    += -static
+#QMAKE_LFLAGS    += -static
 
 
 SOURCES += main.cpp \
@@ -38,5 +38,5 @@ HEADERS  += \
     Application/screen.h \
     Core/exception.h \
     Core/Generator/generator.h \
-    Core/review.h \
-    Core/direction.h
+    Core/direction.h \
+    Core/light.h

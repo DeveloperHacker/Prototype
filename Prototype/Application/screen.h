@@ -7,7 +7,11 @@
 
 #include "Core/world.h"
 #include "Core/Generator/generator.h"
-#include "Core/review.h"
+
+namespace Light
+{
+std::vector<std::vector<bool>> getLight(Point pos, unsigned rev, Maze map);
+}
 
 class Screen : public QWidget
 {

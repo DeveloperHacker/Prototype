@@ -42,7 +42,7 @@ void Screen::paintEvent(QPaintEvent *)
     auto x = q_w_cell / 2;
     auto y = q_h_cell / 2;
 
-    auto light = Review::getLight(position, map, review);
+    auto light = Light::getLight(position, review, map);
 
     QPainter painter(this);
     QPixmap wallPix("ResourceFiles/Textures/SceletonWall.png");
@@ -62,7 +62,8 @@ void Screen::paintEvent(QPaintEvent *)
             {
                 if (map.getCell(I, J) == '#')
                     painter.drawPixmap(j * size, i * size, size, size, wallPix);
-                if (review * review >= distance && light[I - position.y + review][J - position.x + review] != WaveFront())
+                if (I - position.y + review < light.size() && J - position.x + review < light[0].size()
+                        && light[I - position.y + review][J - position.x + review] == true)
                 {
                     memory[I][J] = true;
                     if (map.getCell(I, J) == 'H')
@@ -72,7 +73,7 @@ void Screen::paintEvent(QPaintEvent *)
                     if (map.getCell(I, J) == 'M')
                         painter.drawPixmap(j * size, i * size, size, size, minotaurPix);
 
-                    painter.fillRect(j * size, i * size, size, size, QColor(10, 10, 10, Screen::I(distance, pow(review, 2), 200)));
+                    painter.fillRect(j * size, i * size, size, size, QColor(10, 10, 10, Screen::I(distance, pow(review, 2), 190)));
                 }
                 else
                 {

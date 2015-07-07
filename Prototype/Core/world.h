@@ -23,8 +23,8 @@ private:
     std::vector<Hero*>::iterator chooser;
     static const int STEP_HUMAN = 1;
     static const int STEP_MINOTAVR = 1;
-    static const int REVIEW_HUMAN = 8;
-    static const int REVIEW_MINOTAVR = 6;
+    static const int REVIEW_HUMAN = 12;
+    static const int REVIEW_MINOTAVR = 7;
 
 public:
     World(const std::string& file_name, Character);

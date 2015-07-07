@@ -14,7 +14,7 @@ class Generator
 private:
     static const auto UpperMazeSize = 100U;
     static const auto LowerMazeSize = 50U;
-    static const auto UpperMazeSizeRoom = 3U;
+    static const auto UpperMazeSizeRoom = 7U;
     static const auto LowerMazeSizeRoom = 1U;
     static const auto Coef = 100;
     static const auto ConcentrationMinutaur = 10U; // = [Muinotaurs / Coef Cells]

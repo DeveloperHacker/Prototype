@@ -6,12 +6,13 @@
 class Point
 {
 public:
-    Point() = default;
+    Point() : x(0), y(0) {}
     Point(int x, int y) : x(x), y(y) {}
     ~Point() = default;
 
     int x;
     int y;
+    const Point &operator =(Point temp);
     bool operator ==(Point temp) const;
     bool operator !=(Point temp) const;
 };

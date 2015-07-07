@@ -6,7 +6,7 @@ World::World(const std::string& file_name, Character player) : chooser(hero.begi
     auto search_gg = false;
 
     new_world(file_name);
-
+//    new_world("ResourceFiles/Maps/level.map");
 
     for (auto& hero : this->hero)
     {
