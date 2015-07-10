@@ -12,12 +12,12 @@ typedef std::vector<std::string> maze_t;
 class Generator
 {
 private:
-    static const auto UpperMazeSize = 100U;
-    static const auto LowerMazeSize = 50U;
-    static const auto UpperMazeSizeRoom = 7U;
+    static const auto UpperMazeSize = 300U;
+    static const auto LowerMazeSize = 100U;
+    static const auto UpperMazeSizeRoom = 3U;
     static const auto LowerMazeSizeRoom = 1U;
     static const auto Coef = 100;
-    static const auto ConcentrationMinutaur = 10U; // = [Muinotaurs / Coef Cells]
+    static const auto ConcentrationMinutaur = 0U; // = [Muinotaurs / Coef Cells]
     static const auto DepthGenLoops = 0U;
 
 private:

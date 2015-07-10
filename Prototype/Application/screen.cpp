@@ -42,8 +42,6 @@ void Screen::paintEvent(QPaintEvent *)
     auto x = q_w_cell / 2;
     auto y = q_h_cell / 2;
 
-    auto light = Light::getLight(position, review, map);
-
     QPainter painter(this);
     QPixmap wallPix("ResourceFiles/Textures/SceletonWall.png");
     QPixmap humanPix("ResourceFiles/Textures/SceletonHuman.png");
@@ -52,7 +50,21 @@ void Screen::paintEvent(QPaintEvent *)
 
     painter.fillRect(0, 0, w, h, QColor(255, 255, 255, 255));
 
-    for (auto i = 0U; i <= q_h_cell; ++i)
+    std::vector<std::string> SegmentMap(q_h_cell);
+    for (auto i = 0U; i < q_h_cell; ++i)
+        for (auto j = 0U; j <= q_w_cell; ++j)
+        {
+            auto I = i + position.y - y;
+            auto J = j + position.x - x;
+
+            if (map.isExistance (I, J))
+                SegmentMap[i].push_back(map.getCell(I, J));
+            else SegmentMap[i].push_back('#');
+        }
+    std::vector<std::string> BreakMap = Light::BreakingMap(SegmentMap);
+    auto light = Light::getLight('H', review, SegmentMap);
+
+    for (auto i = 0U; i < q_h_cell; ++i)
         for (auto j = 0U; j <= q_w_cell; ++j)
         {
             auto I = i + position.y - y;
@@ -60,17 +72,16 @@ void Screen::paintEvent(QPaintEvent *)
             auto distance = (j - x) * (j - x) + (i - y) * (i - y);
             if (map.isExistance(I, J))
             {
-                if (map.getCell(I, J) == '#')
+                if (SegmentMap[i][j] == '#')
                     painter.drawPixmap(j * size, i * size, size, size, wallPix);
-                if (I - position.y + review < light.size() && J - position.x + review < light[0].size()
-                        && light[I - position.y + review][J - position.x + review] == true)
+                if (light[i][j] == true)
                 {
                     memory[I][J] = true;
-                    if (map.getCell(I, J) == 'H')
+                    if (SegmentMap[i][j] == 'H')
                         painter.drawPixmap(j * size, i * size, size, size, humanPix);
-                    if (map.getCell(I, J) == 'E')
+                    if (SegmentMap[i][j] == 'E')
                         painter.drawPixmap(j * size, i * size, size, size, doorPix);
-                    if (map.getCell(I, J) == 'M')
+                    if (SegmentMap[i][j] == 'M')
                         painter.drawPixmap(j * size, i * size, size, size, minotaurPix);
 
                     painter.fillRect(j * size, i * size, size, size, QColor(10, 10, 10, Screen::I(distance, pow(review, 2), 190)));
