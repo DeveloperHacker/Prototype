@@ -61,42 +61,57 @@ void Screen::paintEvent(QPaintEvent *)
                 SegmentMap[i].push_back(map.getCell(I, J));
             else SegmentMap[i].push_back('#');
         }
-    std::vector<std::string> BreakMap = Light::BreakingMap(SegmentMap);
-    auto light = Light::getLight('H', review, SegmentMap);
+
+    static const auto BreakingCoef = 1U;
+    std::vector<std::string> BreakMap = Light::BreakingMap(BreakingCoef, SegmentMap);
+    auto light1 = Light::getLight('H', review, SegmentMap);
+    auto light2 = Light::getLight('H', review * BreakingCoef, BreakMap);
 
     for (auto i = 0U; i < q_h_cell; ++i)
         for (auto j = 0U; j <= q_w_cell; ++j)
         {
             auto I = i + position.y - y;
             auto J = j + position.x - x;
-            auto distance = (j - x) * (j - x) + (i - y) * (i - y);
             if (map.isExistance(I, J))
             {
-                if (SegmentMap[i][j] == '#')
+                if (map.getCell (I, J) == '#')
                     painter.drawPixmap(j * size, i * size, size, size, wallPix);
-                if (light[i][j] == true)
+                if (light1[i][j] == true)
                 {
                     memory[I][J] = true;
-                    if (SegmentMap[i][j] == 'H')
+                    if (map.getCell (I, J) == 'H')
                         painter.drawPixmap(j * size, i * size, size, size, humanPix);
-                    if (SegmentMap[i][j] == 'E')
+                    if (map.getCell (I, J) == 'E')
                         painter.drawPixmap(j * size, i * size, size, size, doorPix);
-                    if (SegmentMap[i][j] == 'M')
+                    if (map.getCell (I, J) == 'M')
                         painter.drawPixmap(j * size, i * size, size, size, minotaurPix);
-
-                    painter.fillRect(j * size, i * size, size, size, QColor(10, 10, 10, Screen::I(distance, pow(review, 2), 190)));
-                }
-                else
-                {
-                    if (memory[I][J])
-                        painter.fillRect(j * size, i * size, size, size, QColor(10, 10, 10, 200));
-                    else
-                        painter.fillRect(j * size, i * size, size, size, QColor(50, 50, 50, 255));
                 }
             }
             else
             {
                   painter.fillRect(j * size, i * size, size, size, QColor(50, 50, 50, 255));
+            }
+        }
+
+    for (auto i = 0U; i < q_h_cell * BreakingCoef; ++i)
+        for (auto j = 0U; j <= q_w_cell * BreakingCoef; ++j)
+        {
+            auto I = i / BreakingCoef + position.y - y;
+            auto J = j / BreakingCoef + position.x - x;
+            auto distance = (j - x * BreakingCoef) * (j - x * BreakingCoef)
+                    + (i - y * BreakingCoef) * (i - y * BreakingCoef);
+
+            if (light2[i][j] == true)
+            {
+                painter.fillRect(j * size  / BreakingCoef, i * size / BreakingCoef, size / BreakingCoef, size / BreakingCoef,
+                                 QColor(10, 10, 10, Screen::I(distance, pow(review * BreakingCoef, 2), 190)));
+            }
+            else
+            {
+                if (map.isExistance (I, J) && memory[I][J])
+                    painter.fillRect(j * size / BreakingCoef, i * size / BreakingCoef, size / BreakingCoef, size / BreakingCoef, QColor(10, 10, 10, 200));
+                else
+                    painter.fillRect(j * size / BreakingCoef, i * size / BreakingCoef, size / BreakingCoef, size / BreakingCoef, QColor(50, 50, 50, 255));
             }
         }
 }

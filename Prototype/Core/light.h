@@ -60,9 +60,8 @@ std::vector<std::vector<bool>> getLight(char gg, unsigned rev, std::vector<std::
     return light;
 }
 
-std::vector<std::string> BreakingMap(std::vector<std::string> map)
+std::vector<std::string> BreakingMap(const unsigned BreakingCoef, std::vector<std::string> map)
 {
-    static auto const BreakingCoef = 3U;
     std::vector<std::string>  breakMap(map.size() * BreakingCoef);
 
     for (auto i = 0U; i < map.size (); ++i)

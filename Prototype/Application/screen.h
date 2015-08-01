@@ -10,8 +10,8 @@
 
 namespace Light
 {
-std::vector<std::vector<bool>> getLight(char gg, unsigned rev, std::vector<std::string>& map);
-std::vector<std::string> BreakingMap(std::vector<std::string> map);
+std::vector<std::vector<bool>> getLight(char, unsigned, std::vector<std::string>&);
+std::vector<std::string> BreakingMap(const unsigned, std::vector<std::string>);
 }
 
 class Screen : public QWidget
